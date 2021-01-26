@@ -13,7 +13,7 @@ url = "http://www.mushroom.world/mushrooms/namelist"
 tld = "http://www.mushroom.world/"
 save_directory = "./mushie_images/"
 
-# Spoofed headers to give us access to the page
+# Spoofed HTTP headers to give us access to the page
 headers = {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET',
@@ -62,7 +62,6 @@ def scrape_shroom(url):
     except:
         pass
 
-
     #----------- IMAGE DATA WRANGLING ----------#
     # Extract all the "swipebox" elements that contain image references
     href_list = soup.findAll("a", class_="swipebox")
@@ -77,7 +76,7 @@ def scrape_shroom(url):
         # Next, get just the image filename without any URL business
         img_filename = image.get("href").lstrip('/../data/fungi/')
 
-        #Now try to download the image from Mushroom.World
+        # Now try to download the image from Mushroom.World
         try:
             response = requests.get(img_url)
             if response.status_code == 200:
@@ -125,7 +124,6 @@ def main():
     first_req = requests.get(url, headers)
     first_soup = bs(first_req.content, 'html.parser')
     mushroom_list = first_soup.find_all("a")
-
 
     # For each URL, scrape the desired information using our function
     for mushroom in mushroom_list:
