@@ -30,13 +30,20 @@ headers = {
 #       Scrapes text data, Saves to CSV
 #       Scrapes images, saves locally
 #----------------------------------------------------#
-def scrape_shroom(url, df):
+def scrape_shroom(url):
     # First, download page HTML for parsing
     req = requests.get(url, headers)
     soup = bs(req.content, 'html.parser')
 
+    # Create the Dataframe to store all the info
+    df = pd.DataFrame(columns=['latin_name',
+                                'english_name',
+                                'edibility',
+                                'filename',
+                                'mushroomworld_url',
+                                'image_url'])
 
-    #------ TEXT DATA WRANGLING -----#
+    #----------- TEXT DATA WRANGLING ----------#
     # Get the name, both english and latin
     name = soup.find("div", class_="caption").get_text().lstrip()
     try:
@@ -49,14 +56,14 @@ def scrape_shroom(url, df):
         english_name = "N/A"
 
     # Get the edibility (it's always the fourth attribute on the information header)
-    edibility = soup.find_all("div", class_="textus")[3]
+    edibility = soup.find_all("div", class_="textus")[3].get_text()
     try:
-        edibility, _ = edibility.get_text().split(" (")
+        edibility, _ = edibility.split(" (")
     except:
         pass
 
 
-    #------ IMAGE DATA WRANGLING -----#
+    #----------- IMAGE DATA WRANGLING ----------#
     # Extract all the "swipebox" elements that contain image references
     href_list = soup.findAll("a", class_="swipebox")
 
@@ -92,6 +99,8 @@ def scrape_shroom(url, df):
             ignore_index=True
             )
         # END FOR
+
+    return df
     #END SCRAPE_SHROOM
 
 
@@ -117,11 +126,13 @@ def main():
     first_soup = bs(first_req.content, 'html.parser')
     mushroom_list = first_soup.find_all("a")
 
+
     # For each URL, scrape the desired information using our function
     for mushroom in mushroom_list:
         # But make sure that the URL is one we want!
         if tld in mushroom.get("href"):
-            scrape_shroom(mushroom.get("href"), df)
+            df_out = scrape_shroom(mushroom.get("href"))
+            df = df.append(df_out)
 
     # Throw all that scraped data into a CSV
     df.to_csv(save_directory + "scraped_data.csv")
