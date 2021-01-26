@@ -1,17 +1,17 @@
 import os
-import pandas
+import sys
+import pandas as pd
 import requests
 from bs4 import BeautifulSoup as bs
 
 
-
 #----------------------------------------------------#
-#                   GLOBAL SETTINGS
+#                   SETTINGS
 #----------------------------------------------------#
-#start URL to adjust to our needs
-url1 = "http://www.mushroom.world/mushrooms/namelist"
-url = "http://www.mushroom.world/show?n=Agaricus-arvensis"
-tld = "http://www.mushroom.world"
+# Start URL, adjust to our needs
+url = "http://www.mushroom.world/mushrooms/namelist"
+tld = "http://www.mushroom.world/"
+save_directory = "./mushie_images/"
 
 # Spoofed headers to give us access to the page
 headers = {
@@ -22,67 +22,116 @@ headers = {
     'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
     }
 
-"""
-# Get the URL to each mushroom page
-first_req = requests.get(url1, headers)
-first_soup = bs(first_req.content, 'html.parser')
-mushroom_list = first_soup.find_all("a")
 
-# For each URL, scrape the desired information using our function
-for mushroom in mushroom_list:
-    # But make sure that the URL is one we want!
-    if tld in mushroom.get("href"):
-        scrape_data(mushroom)
-"""
 
 #----------------------------------------------------#
-#
+#                   SCRAPE_SHROOM
+#       Takes a Mushroom World mushroom URL
+#       Scrapes text data, Saves to CSV
+#       Scrapes images, saves locally
 #----------------------------------------------------#
-# First, download page HTML for parsing
-req = requests.get(url, headers)
-soup = bs(req.content, 'html.parser')
-
-# TEXT DATA WRANGLING
-# Get the name, both english and latin
-name = soup.find("div", class_="caption").get_text().lstrip()
-# Now split them into two vars and get rid of all the junk
-latin_name, english_name = name.split("(")
-latin_name = latin_name.rstrip()
-english_name = english_name.rstrip().rstrip(")")
-
-# Get the edibility (it's always the fourth attribute on the information header)
-edibility = soup.find_all("div", class_="textus")[3]
-edibility, _ = edibility.get_text().split(" (")
-
-# Get the MW URL
-mushroomweb_url = mush_url
-
-"""
-# IMAGE DATA WRANGLING
-# Extract all the "swipebox" elements that contain image references
-image_list = soup.findAll("a", class_="swipebox")
-
-# Extract out the filenames for each image from the HREF
+def scrape_shroom(url, df):
+    # First, download page HTML for parsing
+    req = requests.get(url, headers)
+    soup = bs(req.content, 'html.parser')
 
 
-# Now download each of these images locally
-for image in image_list:
+    #------ TEXT DATA WRANGLING -----#
+    # Get the name, both english and latin
+    name = soup.find("div", class_="caption").get_text().lstrip()
     try:
-        img_url = image.get("href").lstrip('')
-        response = requests.get(url)
-        print(response.status_code)
-        if response.status_code == 200:
+        # Now split them into two vars and get rid of all the junk
+        latin_name, english_name = name.split("(")
+        latin_name = latin_name.rstrip()
+        english_name = english_name.rstrip().rstrip(")")
+    except:
+        latin_name = name
+        english_name = "N/A"
 
-            with open(url.lstrip('../data/fungi/'), 'wb') as f:
-                f.write(requests.get(url).content)
-                f.close()
+    # Get the edibility (it's always the fourth attribute on the information header)
+    edibility = soup.find_all("div", class_="textus")[3]
+    try:
+        edibility, _ = edibility.get_text().split(" (")
     except:
         pass
-"""
+
+
+    #------ IMAGE DATA WRANGLING -----#
+    # Extract all the "swipebox" elements that contain image references
+    href_list = soup.findAll("a", class_="swipebox")
+
+    # Now download each of these images locally
+    for image in href_list:
+        # First, concatenate the image filename with the TLD
+        # To get the image URL on Mushroom.World
+        img_url = image.get("href").lstrip('/..')
+        img_url = tld + img_url
+
+        # Next, get just the image filename without any URL business
+        img_filename = image.get("href").lstrip('/../data/fungi/')
+
+        #Now try to download the image from Mushroom.World
+        try:
+            response = requests.get(img_url)
+            if response.status_code == 200:
+                with open(save_directory + img_filename, 'wb') as f:
+                    f.write(requests.get(img_url).content)
+                    f.close()
+        except:
+            pass
+
+        # Now we have to save all that image data to a data frame
+        df = df.append({ 'latin_name' : latin_name,
+                         'english_name' : english_name,
+                         'edibility' : edibility,
+                         'filename' : img_filename,
+                         'mushroomworld_url' : url,
+                         'image_url' : img_url
+            },
+            sort=False,
+            ignore_index=True
+            )
+        # END FOR
+    #END SCRAPE_SHROOM
+
 
 
 #----------------------------------------------------#
-# References
+#                    MAIN DRIVER
+#----------------------------------------------------#
+def main():
+    # Check that the file doesn't exist first before making it
+    if not os.path.exists(save_directory):
+        os.makedirs(save_directory)
+
+    # Create the Dataframe to store all the info
+    df = pd.DataFrame(columns=['latin_name',
+                                'english_name',
+                                'edibility',
+                                'filename',
+                                'mushroomworld_url',
+                                'image_url'])
+
+    # Get the URL to each mushroom page
+    first_req = requests.get(url, headers)
+    first_soup = bs(first_req.content, 'html.parser')
+    mushroom_list = first_soup.find_all("a")
+
+    # For each URL, scrape the desired information using our function
+    for mushroom in mushroom_list:
+        # But make sure that the URL is one we want!
+        if tld in mushroom.get("href"):
+            scrape_shroom(mushroom.get("href"), df)
+
+    # Throw all that scraped data into a CSV
+    df.to_csv(save_directory + "scraped_data.csv")
+
+
+main()
+
+
+#----------------------------------------------------#
+#                    REFERENCES
 #----------------------------------------------------#
 # https://hackersandslackers.com/scraping-urls-with-beautifulsoup/
 # https://wodan.xyz/python-how-to-download-all-the-images-from-the-website/

@@ -22,6 +22,7 @@ $ pipenv shell
 
 ---
 #### Usage
+Simply call the scraper using python3.
 ```sh
 $ python3 bs_scraper.py
 ```
