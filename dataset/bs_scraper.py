@@ -133,7 +133,7 @@ def main():
             df = df.append(df_out)
 
     # Throw all that scraped data into a CSV
-    df.to_csv(save_directory + "scraped_data.csv")
+    df.to_csv(save_directory + "_scraped_data.csv")
 
 
 main()

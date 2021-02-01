@@ -1,8 +1,5 @@
-## Table of Contents
-* [About the Scraper](#about-the-scraper)
-* [Prerequisites](#Prerequisites)
-* [Usage](#usage)
-
+## Mushroom Dataset Scraper
+This is a simple web scraper built to retrieve images of mushrooms from Mushroom.world, along with some simple data points. It was built using [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/).
 
 ---
 #### Prerequisites
@@ -17,7 +14,6 @@ To install all the dependencies and start the virtual env, run the commands:
 $ pipenv install
 $ pipenv shell
 ```
-
 
 
 ---
