@@ -28,7 +28,7 @@ To install all the dependencies and start the virtual env, run the commands:
 $ pipenv install
 $ pipenv shell
 ```
-Then launch Jupyter within the virtual env by running the command:
+Then launch Jupyterlab within the virtual env by running the command:
 ```sh
-$ pipenv run jupyter notebook
+$ jupyter-lab
 ```

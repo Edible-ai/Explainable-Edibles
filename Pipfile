@@ -11,8 +11,10 @@ bs4 = "*"
 requests = "*"
 pandas = "*"
 numpy = "*"
-jupyter = "*"
 matplotlib = "*"
+tensorflow = "*"
+jupyterlab = "*"
+scipy = "*"
 
 [requires]
 python_version = "3.8"
