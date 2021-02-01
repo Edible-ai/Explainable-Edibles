@@ -7,13 +7,28 @@
 </p>
 
 
-<!-- TABLE OF CONTENTS -->
 ## Table of Contents
 * [Objective](#about-the-course)
-
+* [Usage](#usage)
 
 
 ---
-<!-- OBJECTIVE -->
 ## Objective
 We don't know yet, but we'll fill in the gaps along the way!
+
+---
+## Usage
+To run any of the included Jupyter notebooks locally, you will need:
+* Python 3.7+
+* Pipenv
+* An active internet connection and web browser
+
+To install all the dependencies and start the virtual env, run the commands:
+```sh
+$ pipenv install
+$ pipenv shell
+```
+Then launch Jupyter within the virtual env by running the command:
+```sh
+$ pipenv run jupyter notebook
+```

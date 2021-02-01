@@ -6,12 +6,13 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-scrapy = "*"
 pillow = "*"
 bs4 = "*"
 requests = "*"
-numpy = "*"
 pandas = "*"
+numpy = "*"
+jupyter = "*"
+matplotlib = "*"
 
 [requires]
 python_version = "3.8"
