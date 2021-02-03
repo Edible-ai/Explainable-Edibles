@@ -15,6 +15,7 @@ matplotlib = "*"
 tensorflow = "*"
 jupyterlab = "*"
 scipy = "*"
+selenium = "*"
 
 [requires]
 python_version = "3.8"
