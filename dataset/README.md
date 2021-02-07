@@ -1,5 +1,5 @@
 ## Mushroom Dataset Scraper
-This is a simple web scraper built to retrieve images of mushrooms from Mushroom.world, along with some simple data points. It was built using [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/).
+This is a web scraper built to retrieve images and text data of mushrooms from Mushroom.world, along with some simple data points. It was built using [BeautifulSoup](https://www.crummy.com/software/BeautifulSoup/bs4/doc/), then [Selenium](https://www.selenium.dev/) functionality was added on to allow for image scraping from Google Images.
 
 ---
 #### Prerequisites
@@ -15,10 +15,14 @@ $ pipenv install
 $ pipenv shell
 ```
 
+Then, you will need to download the appropriate [ChromeDriver](http://chromedriver.chromium.org/downloads) for your operating system and browser. This allows Selenium to programmatically navigate Google Images.
+Place this executable in the same directory as the Image_scraper jupyterlab notebook.
+
 
 ---
 #### Usage
-Simply call the scraper using python3.
+Launch Jupyterlab within the virtual env by running the command:
 ```sh
-$ python3 bs_scraper.py
+$ jupyter-lab
 ```
+Then follow the notebook
