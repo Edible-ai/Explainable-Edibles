@@ -16,6 +16,8 @@ tensorflow = "*"
 jupyterlab = "*"
 scipy = "*"
 selenium = "*"
+jsonschema = "*"
+seaborn = "*"
 
 [requires]
 python_version = "3.8"
