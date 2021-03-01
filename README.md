@@ -19,16 +19,17 @@ We don't know yet, but we'll fill in the gaps along the way!
 ---
 ## Usage
 To run any of the included Jupyter notebooks locally, you will need:
-* Python 3.7+
+* Python 3.7
 * Pipenv
 * An active internet connection and web browser
 
-To install all the dependencies and start the virtual env, run the commands:
+To install all the dependencies, run the commands:
 ```sh
 $ pipenv install
-$ pipenv shell
 ```
+
 Then launch Jupyterlab within the virtual env by running the command:
 ```sh
-$ jupyter-lab
+$ pipenv run jupyter-lab
 ```
+
