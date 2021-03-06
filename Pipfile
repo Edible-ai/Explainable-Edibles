@@ -20,7 +20,7 @@ jsonschema = "*"
 seaborn = "*"
 tf-explain = "*"
 opencv-python = "*"
-shap = "*"
+sklearn = "*"
 
 [requires]
 python_version = "3.7"
