@@ -1,3 +1,5 @@
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 <!-- HEADER -->
 <br />
 <p align="center">
@@ -32,4 +34,3 @@ Then launch Jupyterlab within the virtual env by running the command:
 ```sh
 $ pipenv run jupyter-lab
 ```
-
