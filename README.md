@@ -61,8 +61,12 @@ In [notebook #4](./4_XAI_technique_exploration.ipynb), we instantiate and compar
 * [Integrated Gradients](https://github.com/sicara/tf-explain#integrated-gradients): Visualizes an average of the gradients along the construction of the input towards the decision.
 * [Occlusion Sensitivity](https://github.com/sicara/tf-explain#occlusion-sensitivity): Visualizes how parts of the image affects neural network's confidence by occluding parts iteratively.
 
+*A few edible mushrooms*
 ![XAI pic 1](./assets/xai_comparison_edible_8.png)
-![XAI pic 2](./assets/xai_comparison_poisonous_7.png)
+![XAI pic 2](./assets/xai_comparison_edible_7.png)
+*And a few poisonous ones*
+![XAI pic 3](./assets/xai_comparison_poisonous_7.png)
+![XAI pic 4](./assets/xai_comparison_poisonous_9.png)
 
 ---
 ## Usage
