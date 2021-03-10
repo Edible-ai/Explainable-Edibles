@@ -1,4 +1,4 @@
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+
 
 <!-- HEADER -->
 ![Header Image](./assets/cover_image.jpg)
@@ -10,6 +10,7 @@
      Capstone project for Northwestern University MSDS 498
 </p>
 
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 ## Table of Contents
 * [Overview](#overview)
